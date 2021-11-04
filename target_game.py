@@ -1,3 +1,6 @@
+
+
+
 from typing import List
 import random
 import string
@@ -35,11 +38,6 @@ def generate_grid() -> List[List[str]]:
         grid.append(z)
         z = []
     return grid
-    print(field)
-    print(grid)
-    pass
-
-en = "https://cms.ucu.edu.ua/pluginfile.php/276682/mod_resource/content/1/en"
 def get_words(f: str, letters: List[str]) -> List[str]:
 
     """
@@ -89,6 +87,17 @@ def get_user_words() -> List[str]:
     Gets words from user input and returns a list with these words.
     Usage: enter a word or press ctrl+d to finish.
     """
+    user_word_list = []
+    a = True
+    while a:
+        user_word = str(input())
+        if user_word == '':
+
+            break
+        user_word_list.append(user_word)
+        
+    
+    
     pass
 
 
@@ -107,3 +116,4 @@ def results():
 
 #generate_grid()
 print(get_words(r"C:\Users\Siromanec\Desktop\py_progs\lab6\en.txt" , ['s', 'g', 'i', 'v', 'r', 'v', 'o', 'n', 'q']))
+get_user_words()
