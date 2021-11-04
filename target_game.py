@@ -43,49 +43,65 @@ def get_words(f: str, letters: List[str]) -> List[str]:
     """
     Reads the file f. Checks the words with rules and returns a list of words.
     """
-
-    letters_occurance_list = []
-    word_list = []
-
     with open(f , 'r' ) as words_file:
         words_file.readline() # 'Wordlists\n'
         data = words_file.readline().strip() # '#en: English'
         while data.startswith( '#' ):
             data = words_file.readline().strip() # 'a'
-        for ch_in in letters:
-            rep = letters.count(ch_in)
-            if tuple((ch_in,rep)) not in letters_occurance_list:
-                if rep>1:
-                    for repeated in range(1,rep+1):
-                        letters_occurance_list.append(tuple((ch_in,repeated)))              
-                else:
-                    letters_occurance_list.append(tuple((ch_in,rep))) #add and count letters in initial list
+        list1 = check_words(letters,words_file)
+    return list1
+def check_words(letters: List[str],words_file) -> List[str]:
+    """
+    checks if words have the right letters
+    >>> check_words(['s', 'g', 'i', 'v', 'r', 'v', 'o', 'n', 'q'], \
+        ['girn', 'giro', 'grin', 'gris', 'grison', 'groin', 'gros', \
+        'inro', 'iron', 'noir', 'nori', 'ornis', 'ring', 'rosin',\
+        'roving', 'sori', 'sorn', 'vigor', 'viron', 'visor'])
+    ['girn', 'giro', 'grin', 'gris', 'grison', 'groin', 'gros', \
+'inro', 'iron', 'noir', 'nori', 'ornis', 'ring', 'rosin', 'roving', \
+'sori', 'sorn', 'vigor', 'viron', 'visor']
+
+    """
+
+    letters_occurance_list = []
+    words_from_dict = []
+    for ch_in in letters:
+        rep = letters.count(ch_in)
+        if tuple((ch_in,rep)) not in letters_occurance_list:
+            if rep>1:
+                for repeated in range(1,rep+1):
+                    letters_occurance_list.append(tuple((ch_in,repeated)))              
+            else:
+                letters_occurance_list.append(tuple((ch_in,rep))) #add and count letters in initial list
         letters_occurance_set = set(letters_occurance_list)
-        for word in words_file:
-            word = word.strip()
-            word_ch_occurance_list = []
-            length = len(word)
-            word_ch_list = list(word)
-            if 3 < length <10 and letters[4] in word_ch_list: #check for length
-                for ch_w in word_ch_list:
-                    rep_ch_w = word_ch_list.count(ch_w)
-                    if tuple((ch_w,rep_ch_w)) not in word_ch_occurance_list:
-                        if rep_ch_w>1:
-                            for repeated_ch_w in range(1,rep_ch_w+1):
-                                word_ch_occurance_list.append(tuple((ch_w,repeated_ch_w)))
-                        else:  
-                            word_ch_occurance_list.append(tuple((ch_w,rep_ch_w))) #add and count letters in initial list
-                word_ch_occurance_set = set(word_ch_occurance_list)
-                if word_ch_occurance_set - letters_occurance_set == set():
-                    word_list.append(word) 
-    return word_list
-
-
+    for word in words_file:
+        word = word.strip()
+        word_ch_occurance_list = []
+        length = len(word)
+        word_ch_list = list(word)
+        if 3 < length <10 and letters[4] in word_ch_list: #check for length
+            for ch_w in word_ch_list:
+                rep_ch_w = word_ch_list.count(ch_w)
+                if tuple((ch_w,rep_ch_w)) not in word_ch_occurance_list:
+                    if rep_ch_w>1:
+                        for repeated_ch_w in range(1,rep_ch_w+1):
+                            word_ch_occurance_list.append(tuple((ch_w,repeated_ch_w)))
+                    else:  
+                        word_ch_occurance_list.append(tuple((ch_w,rep_ch_w))) #add and count letters in initial list
+            
+            word_ch_occurance_set = set(word_ch_occurance_list)
+           
+            if word_ch_occurance_set - letters_occurance_set == set():
+                words_from_dict.append(word) 
+        
+    return words_from_dict
 
 def get_user_words() -> List[str]:
     """
     Gets words from user input and returns a list with these words.
     Usage: enter a word or press ctrl+d to finish.
+    >>> get_user_words()
+    []
     """
     user_word_list = []
     a = True
@@ -95,10 +111,7 @@ def get_user_words() -> List[str]:
 
             break
         user_word_list.append(user_word)
-        
-    
-    
-    pass
+    return user_word_list
 
 
 def get_pure_user_words(user_words: List[str], letters: List[str], words_from_dict: List[str]) -> List[str]:
@@ -108,12 +121,23 @@ def get_pure_user_words(user_words: List[str], letters: List[str], words_from_di
     Checks user words with the rules and returns list of those words
     that are not in dictionary.
     """
-    pass
+    special_words=[]
+    x = check_words(letters,user_words)
+    for i in x:
+        if i not in words_from_dict:
+            special_words.append(i) 
+
+
+    return special_words
 
 
 def results():
     pass
 
 #generate_grid()
-print(get_words(r"C:\Users\Siromanec\Desktop\py_progs\lab6\en.txt" , ['s', 'g', 'i', 'v', 'r', 'v', 'o', 'n', 'q']))
-get_user_words()
+#print(get_words(r"C:\Users\Siromanec\Desktop\py_progs\lab6\en.txt" , ['s', 'g', 'i', 'v', 'r', 'v', 'o', 'n', 'q']))
+#print(get_pure_user_words(get_user_words(),['s', 'g', 'i', 'v', 'r', 'v', 'o', 'n', 'q'],get_words(r"C:\Users\Siromanec\Desktop\py_progs\lab6\en.txt" , ['s', 'g', 'i', 'v', 'r', 'v', 'o', 'n', 'q'])))
+#get_user_words()
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
