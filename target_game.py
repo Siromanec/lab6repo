@@ -1,11 +1,6 @@
-
-
-
 from typing import List
 import random
 import string
-import os
-os.getcwd()
 def generate_grid() -> List[List[str]]:
     """
     Generates list of lists of letters - i.e. grid for the game.
@@ -17,33 +12,32 @@ def generate_grid() -> List[List[str]]:
     noise = []
     field = []
     grid = []
-    z =[]
+    line_row =[]
     is_vowel = False
     while i<9:
-        x = random.randint(0,25)
-        if x == 0 or x == 4 or x == 8 or x == 14 or x == 20:
+        letter_index = random.randint(0,25)
+        if letter_index == 0 or letter_index == 4 or letter_index == 8 or letter_index == 14 or letter_index == 20:
             is_vowel = True
-        noise.append(x)
+        noise.append(letter_index)
         i += 1
         if i == 9 and not is_vowel:
             i = 0
             noise = []
     for i in noise:
-        y = Alphabet[i]
-        field.append(y)
+        alpha_bet = Alphabet[i]
+        field.append(alpha_bet)
     for i in (0,3,6):
-        z.append(field[i].upper())
-        z.append(field[i+1].upper())
-        z.append(field[i+2].upper())
-        grid.append(z)
-        z = []
+        line_row.append(field[i].upper())
+        line_row.append(field[i+1].upper())
+        line_row.append(field[i+2].upper())
+        grid.append(line_row)
+        line_row = []
     return grid
 def get_words(f: str, letters: List[str]) -> List[str]:
-
     """
     Reads the file f. Checks the words with rules and returns a list of words.
     """
-    with open(f , 'r' ) as words_file:
+    with open(f , 'r') as words_file:
         words_file.readline() # 'Wordlists\n'
         data = words_file.readline().strip() # '#en: English'
         while data.startswith( '#' ):
@@ -60,9 +54,7 @@ def check_words(letters: List[str],words_file) -> List[str]:
     ['girn', 'giro', 'grin', 'gris', 'grison', 'groin', 'gros', \
 'inro', 'iron', 'noir', 'nori', 'ornis', 'ring', 'rosin', 'roving', \
 'sori', 'sorn', 'vigor', 'viron', 'visor']
-
     """
-
     letters_occurance_list = []
     words_from_dict = []
     for ch_in in letters:
@@ -86,16 +78,12 @@ def check_words(letters: List[str],words_file) -> List[str]:
                     if rep_ch_w>1:
                         for repeated_ch_w in range(1,rep_ch_w+1):
                             word_ch_occurance_list.append(tuple((ch_w,repeated_ch_w)))
-                    else:  
+                    else:
                         word_ch_occurance_list.append(tuple((ch_w,rep_ch_w))) #add and count letters in initial list
-            
             word_ch_occurance_set = set(word_ch_occurance_list)
-           
             if word_ch_occurance_set - letters_occurance_set == set():
-                words_from_dict.append(word) 
-        
+                words_from_dict.append(word)  
     return words_from_dict
-
 def get_user_words() -> List[str]:
     """
     Gets words from user input and returns a list with these words.
@@ -104,16 +92,14 @@ def get_user_words() -> List[str]:
     []
     """
     user_word_list = []
-    a = True
-    while a:
+    eweqa = True
+    while eweqa:
         user_word = str(input())
         if user_word == '':
 
             break
         user_word_list.append(user_word)
     return user_word_list
-
-
 def get_pure_user_words(user_words: List[str], letters: List[str], words_from_dict: List[str]) -> List[str]:
     """
     (list, list, list) -> list
@@ -122,22 +108,14 @@ def get_pure_user_words(user_words: List[str], letters: List[str], words_from_di
     that are not in dictionary.
     """
     special_words=[]
-    x = check_words(letters,user_words)
-    for i in x:
+    checked_words = check_words(letters,user_words)
+    for i in checked_words:
         if i not in words_from_dict:
-            special_words.append(i) 
-
-
+            special_words.append(i)
     return special_words
-
-
 def results():
-    pass
-
-#generate_grid()
-#print(get_words(r"C:\Users\Siromanec\Desktop\py_progs\lab6\en.txt" , ['s', 'g', 'i', 'v', 'r', 'v', 'o', 'n', 'q']))
-#print(get_pure_user_words(get_user_words(),['s', 'g', 'i', 'v', 'r', 'v', 'o', 'n', 'q'],get_words(r"C:\Users\Siromanec\Desktop\py_progs\lab6\en.txt" , ['s', 'g', 'i', 'v', 'r', 'v', 'o', 'n', 'q'])))
-#get_user_words()
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
+    """
+    writes text
+    """
+    with open("result.txt", 'w'):
+        pass
